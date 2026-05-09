@@ -40,7 +40,7 @@ WeChat article / DOI / title → Claude extracts metadata → opens PDF in your 
 ### Method 1: git clone (recommended)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cns-paper-collector.git ~/.claude/skills/cns-paper-collector/
+git clone https://github.com/hmj238751-ui/cns-paper-collector.git ~/.claude/skills/cns-paper-collector/
 ```
 
 Then tell Claude: `请用 cns-paper-collector 这个 skill。`
@@ -51,21 +51,21 @@ Then tell Claude: `请用 cns-paper-collector 这个 skill。`
 # Download the skill file directly
 mkdir -p ~/.claude/skills/cns-paper-collector/
 curl -sL -o ~/.claude/skills/cns-paper-collector/SKILL.md \
-  https://raw.githubusercontent.com/YOUR_USERNAME/cns-paper-collector/main/SKILL.md
+  https://raw.githubusercontent.com/hmj238751-ui/cns-paper-collector/main/SKILL.md
 curl -sL -o ~/.claude/skills/cns-paper-collector/ocr_image.swift \
-  https://raw.githubusercontent.com/YOUR_USERNAME/cns-paper-collector/main/ocr_image.swift
+  https://raw.githubusercontent.com/hmj238751-ui/cns-paper-collector/main/ocr_image.swift
 ```
 
 ### Method 3: GitHub ZIP download
 
-1. Go to `https://github.com/YOUR_USERNAME/cns-paper-collector`
+1. Go to `https://github.com/hmj238751-ui/cns-paper-collector`
 2. Click the green `Code` button → `Download ZIP`
 3. Unzip to `~/.claude/skills/cns-paper-collector/`
 
 ### Method 4: One-liner (macOS)
 
 ```bash
-mkdir -p ~/.claude/skills/cns-paper-collector/ && cd ~/.claude/skills/cns-paper-collector/ && curl -sLO https://raw.githubusercontent.com/YOUR_USERNAME/cns-paper-collector/main/SKILL.md && curl -sLO https://raw.githubusercontent.com/YOUR_USERNAME/cns-paper-collector/main/ocr_image.swift && echo "Done. Tell Claude: /cns-paper-collector"
+mkdir -p ~/.claude/skills/cns-paper-collector/ && cd ~/.claude/skills/cns-paper-collector/ && curl -sLO https://raw.githubusercontent.com/hmj238751-ui/cns-paper-collector/main/SKILL.md && curl -sLO https://raw.githubusercontent.com/hmj238751-ui/cns-paper-collector/main/ocr_image.swift && echo "Done. Tell Claude: /cns-paper-collector"
 ```
 
 ---
