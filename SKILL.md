@@ -12,19 +12,42 @@ The user handles the actual downloading (clicking "Download PDF" in Chrome). Cla
 
 ---
 
-## Assumptions (users MUST verify these before first use)
+## Environment Configuration (first-time setup)
 
-This skill assumes:
+Before using this skill, verify your environment. Claude can help troubleshoot if you paste any error output.
 
-| Assumption | Why | How to verify |
-|------------|-----|---------------|
-| **scrapling is installed** | WeChat articles are JS-rendered and can't be fetched with curl | Run `scrapling --help` |
-| **macOS with Swift** | OCR for journal screenshots uses Vision framework | Run `swift --version` |
-| **Google Chrome is in /Applications** | PDF pages open via `open -a "Google Chrome"` | Run `ls /Applications/Google\ Chrome.app` |
-| **curl is available** | OA PDFs are downloaded with curl | Run `curl --version` |
-| **Crossref API is accessible** | DOI lookups use `api.crossref.org` | Run `curl -s https://api.crossref.org/works/10.1038/s41586-026-10476-w` |
+**Quick check:**
+```bash
+claude --help > /dev/null 2>&1 && scrapling --help > /dev/null 2>&1 && echo "Ready" || echo "Missing deps"
+```
 
-If any assumption fails, see the "Frequently Broken Assumptions" section at the bottom.
+**Complete setup (macOS):**
+```bash
+# 1. Install scrapling (engine for WeChat page rendering)
+/opt/homebrew/opt/python@3.12/bin/python3.12 -m pip install --break-system-packages scrapling[all]
+
+# 2. Install Playwright browser
+playwright install chromium
+
+# 3. Install the skill
+git clone https://github.com/hmj238751-ui/cns-paper-collector.git ~/.claude/skills/cns-paper-collector/
+
+# 4. Verify
+scrapling --help && swift --version && echo "All set"
+```
+
+**Linux:** replace step 1 with `pip install scrapling[all]`, add `playwright install-deps chromium`. OCR needs `tesseract` instead of Swift.
+
+**Windows:** scrapling via WSL/Git Bash. Chrome path differs (`start chrome`). OCR needs tesseract.
+
+**Troubleshooting:**
+| Error | Fix |
+|-------|-----|
+| `pip: externally-managed-environment` | Add `--break-system-packages` |
+| `No module named 'scrapling'` | Wrong Python — use Homebrew's `/opt/homebrew/opt/python@3.12/` |
+| `BrowserType.launch: Executable doesn't exist` | `playwright install chromium` |
+
+See repository [README](https://github.com/hmj238751-ui/cns-paper-collector) for detailed platform-specific setup.
 
 ---
 
