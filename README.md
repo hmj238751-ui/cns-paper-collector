@@ -28,10 +28,57 @@ WeChat article / DOI / title → Claude extracts metadata → opens PDF in your 
 | Requirement | How to check | How to install |
 |-------------|-------------|----------------|
 | **Claude Code** | Run `claude --help` | [docs.anthropic.com](https://docs.anthropic.com/en/docs/claude-code) |
-| **scrapling** | Run `scrapling --help` | `pip install scrapling[all]` |
+| **scrapling** | Run `scrapling --help` | See [scrapling setup](#scrapling-setup) below |
 | **Google Chrome** | macOS: `/Applications/Google Chrome.app` | [google.com/chrome](https://www.google.com/chrome/) |
+| **Playwright browsers** | `playwright install chromium` | Bundled with scrapling setup |
 | **curl** | Run `curl --version` | Pre-installed on macOS/Linux |
-| **macOS 13+** (OCR) | Run `swift --version` | Built-in on macOS. Linux users: see [Linux OCR](#linux-ocr) |
+| **macOS 13+** (OCR) | Run `swift --version` | Built-in on macOS. Linux: see [Linux OCR](#linux-ocr) |
+
+### scrapling setup
+
+scrapling is the engine that fetches WeChat articles and extracts metadata. It's the most complex dependency — here's the complete setup:
+
+**macOS:**
+```bash
+# 1. Ensure you're using Homebrew Python 3.12 (scrapling requires it)
+/opt/homebrew/opt/python@3.12/bin/python3.12 -m pip install --break-system-packages scrapling[all]
+
+# 2. Install Playwright's browser
+playwright install chromium
+
+# 3. Verify
+scrapling --help
+```
+
+**Linux (Debian/Ubuntu):**
+```bash
+# 1. Install system dependencies
+sudo apt install python3.12 python3.12-pip
+
+# 2. Install scrapling
+pip install scrapling[all]
+
+# 3. Install Playwright dependencies and browser
+playwright install-deps chromium
+playwright install chromium
+
+# 4. Verify
+scrapling --help
+```
+
+**Why scrapling?** WeChat pages are entirely JavaScript-rendered. Static HTTP clients (curl, requests) return empty HTML shells — there's no article content to parse. scrapling launches a real Chrome browser, renders the full page including all JavaScript, and extracts the rendered content. It also handles TLS fingerprinting, anti-bot headers, and Cloudflare challenges for journal sites.
+
+scrapling is MIT-licensed open source. See [ATTRIBUTION.md](ATTRIBUTION.md) for full copyright details.
+
+**Troubleshooting scrapling:**
+
+| Problem | Solution |
+|---------|----------|
+| `pip: command not found` | Use `pip3` or `python3 -m pip` |
+| `error: externally-managed-environment` (macOS Homebrew) | Add `--break-system-packages` flag |
+| `No module named 'scrapling'` after install | Check you're using the correct Python: `which python3` |
+| `BrowserType.launch: Executable doesn't exist` | Run `playwright install chromium` |
+| `PyObjC` build fails during install | Not critical — the core features still work without `camoufox` |
 
 ---
 
@@ -176,6 +223,16 @@ Found a publisher pattern that works? A new anti-bot bypass? Open an issue or PR
 
 ---
 
+## Credits
+
+This skill orchestrates several open-source tools. See [ATTRIBUTION.md](ATTRIBUTION.md) for full copyright details.
+
+- **scrapling** — Web scraping engine (MIT) — [github.com/scrapling/scrapling](https://github.com/scrapling/scrapling)
+- **Playwright** — Browser automation (Apache 2.0) — [playwright.dev](https://playwright.dev)
+- **Apple Vision** — macOS OCR framework (Apple Inc.)
+- **Crossref API** — Academic metadata — [crossref.org](https://www.crossref.org)
+- **curl** — HTTP client — [curl.se](https://curl.se)
+
 ## License
 
-MIT
+MIT © [hmj238751-ui](https://github.com/hmj238751-ui)
